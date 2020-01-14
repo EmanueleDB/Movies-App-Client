@@ -3,11 +3,16 @@ import _ from "lodash";
 import PropTypes from "prop-types";
 
 const Pagination = props => {
-  const { itemsCount, pageSize, currentPage, onPageChange } = props;
+  const { itemsCount, pageSize, currentPage, onPageChanged } = props;
   const pagesCount = Math.ceil(itemsCount / pageSize);
 
   if (pagesCount === 1) return null;
   const pages = _.range(1, pagesCount + 1);
+
+  const handlePageChanged = page => event => {
+    event.preventDefault();
+    onPageChanged(page);
+  };
 
   return (
     <nav>
@@ -20,7 +25,7 @@ const Pagination = props => {
             <a
               className="page-link"
               href="/#"
-              onClick={() => onPageChange(page)}
+              onClick={handlePageChanged(page)}
             >
               {page}
             </a>
@@ -35,7 +40,7 @@ Pagination.propTypes = {
   itemsCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired
+  onPageChanged: PropTypes.func.isRequired
 };
 
 export default Pagination;
